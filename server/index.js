@@ -6,6 +6,8 @@ import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
+import authRoutes from "./routes/authRoutes.js";
+import resumeRoutes from "./routes/resumeRoutes.js";
 
 dotenv.config();
 
@@ -30,6 +32,9 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.get("/", (req, res) => {
   res.json({ message: "Skill Bridge AI Server is running ✅" });
 });
+
+app.use("/api/auth", authRoutes);
+app.use("/api/resume", resumeRoutes);
 
 const PORT = process.env.PORT || 5000;
 

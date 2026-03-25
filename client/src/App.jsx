@@ -8,6 +8,7 @@ import { Toaster } from "react-hot-toast";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
+import UploadPage from "./pages/Upload";
 
 const App = () => {
   return (
@@ -29,7 +30,7 @@ const App = () => {
           path="/upload"
           element={
             <ProtectedRoute>
-              <div>Upload Page</div>
+              <UploadPage />
             </ProtectedRoute>
           }
         />
