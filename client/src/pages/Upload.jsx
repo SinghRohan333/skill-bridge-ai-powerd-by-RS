@@ -2,12 +2,31 @@ import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { Upload, FileText, X, CheckCircle } from "lucide-react";
+import { Upload, FileText, X, CheckCircle, Briefcase } from "lucide-react";
 import axiosInstance from "../utils/axios";
+
+const JOB_ROLES = [
+  "Software Engineer",
+  "Frontend Developer",
+  "Backend Developer",
+  "Full Stack Developer",
+  "Data Scientist",
+  "Data Analyst",
+  "Machine Learning Engineer",
+  "DevOps Engineer",
+  "Cloud Engineer",
+  "Cybersecurity Analyst",
+  "UI/UX Designer",
+  "Product Manager",
+  "Business Analyst",
+  "Mobile App Developer",
+  "Database Administrator",
+];
 
 const UploadPage = () => {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [targetRole, setTargetRole] = useState("");
   const navigate = useNavigate();
 
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
@@ -31,9 +50,7 @@ const UploadPage = () => {
     multiple: false,
   });
 
-  const removeFile = () => {
-    setFile(null);
-  };
+  const removeFile = () => setFile(null);
 
   const formatFileSize = (bytes) => {
     if (bytes < 1024) return bytes + " B";
@@ -42,26 +59,34 @@ const UploadPage = () => {
   };
 
   const handleUpload = async () => {
-    if (!file) {
-      toast.error("Please select a file first");
-      return;
-    }
+    if (!file) return toast.error("Please select a file first");
+    if (!targetRole) return toast.error("Please select a target job role");
 
     try {
       setUploading(true);
       const formData = new FormData();
       formData.append("resume", file);
 
-      const response = await axiosInstance.post("/resume/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
+      const uploadResponse = await axiosInstance.post(
+        "/resume/upload",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
         },
+      );
+
+      const resumeId = uploadResponse.data.resume.id;
+      toast.success("Resume uploaded! Analyzing with AI...");
+
+      const analysisResponse = await axiosInstance.post("/analyze/resume", {
+        resumeId,
+        targetRole,
       });
 
-      toast.success("Resume uploaded successfully!");
-      navigate(`/analysis/${response.data.resume.id}`);
+      toast.success("Analysis complete!");
+      navigate(`/analysis/${analysisResponse.data.analysis._id}`);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Upload failed");
+      toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
       setUploading(false);
     }
@@ -69,7 +94,6 @@ const UploadPage = () => {
 
   return (
     <div className="min-h-screen bg-base-200">
-      {/* Navbar */}
       <div className="navbar bg-base-100 shadow-sm px-6">
         <div className="flex-1">
           <span className="text-xl font-bold text-primary">
@@ -78,27 +102,21 @@ const UploadPage = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="max-w-2xl mx-auto px-4 py-12">
         <div className="text-center mb-10">
           <h1 className="text-3xl font-bold text-base-content mb-2">
             Upload Your Resume
           </h1>
           <p className="text-base-content/50">
-            Upload your resume in PDF or DOCX format and let AI analyze it for
-            you
+            Upload your resume and select a target role for AI-powered skill gap
+            analysis
           </p>
         </div>
 
-        {/* Dropzone */}
         <div
           {...getRootProps()}
           className={`border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all duration-200
-            ${
-              isDragActive
-                ? "border-primary bg-primary/5 scale-105"
-                : "border-base-300 hover:border-primary hover:bg-base-100"
-            }
+            ${isDragActive ? "border-primary bg-primary/5 scale-105" : "border-base-300 hover:border-primary hover:bg-base-100"}
             ${file ? "border-success bg-success/5" : ""}
           `}
         >
@@ -137,7 +155,6 @@ const UploadPage = () => {
           )}
         </div>
 
-        {/* File Preview */}
         {file && (
           <div className="mt-4 bg-base-100 rounded-xl p-4 flex items-center gap-4 shadow-sm">
             <div className="bg-primary/10 rounded-lg p-3">
@@ -160,14 +177,37 @@ const UploadPage = () => {
           </div>
         )}
 
-        {/* Upload Button */}
+        <div className="mt-6">
+          <label className="label pb-1">
+            <span className="label-text font-medium flex items-center gap-2">
+              <Briefcase size={16} className="text-primary" />
+              Target Job Role
+            </span>
+          </label>
+          <select
+            className="select select-bordered w-full"
+            value={targetRole}
+            onChange={(e) => setTargetRole(e.target.value)}
+          >
+            <option value="">Select your target job role</option>
+            {JOB_ROLES.map((role) => (
+              <option key={role} value={role}>
+                {role}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <button
           onClick={handleUpload}
-          disabled={!file || uploading}
+          disabled={!file || !targetRole || uploading}
           className="btn w-full mt-6 text-white bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 border-none disabled:opacity-50"
         >
           {uploading ? (
-            <span className="loading loading-spinner loading-sm"></span>
+            <span className="flex items-center gap-2">
+              <span className="loading loading-spinner loading-sm"></span>
+              Analyzing your resume...
+            </span>
           ) : (
             "Upload & Analyze Resume"
           )}

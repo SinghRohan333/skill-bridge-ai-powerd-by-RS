@@ -9,6 +9,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import UploadPage from "./pages/Upload";
+import Analysis from "./pages/Analysis";
 
 const App = () => {
   return (
@@ -38,7 +39,7 @@ const App = () => {
           path="/analysis/:id"
           element={
             <ProtectedRoute>
-              <div>Analysis Page</div>
+              <Analysis />
             </ProtectedRoute>
           }
         />

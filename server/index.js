@@ -8,8 +8,10 @@ import path from "path";
 import { fileURLToPath } from "url";
 import authRoutes from "./routes/authRoutes.js";
 import resumeRoutes from "./routes/resumeRoutes.js";
+import analysisRoutes from "./routes/analysisRoutes.js";
 
 dotenv.config();
+// console.log("Gemini Key:", process.env.GROQ_API_KEY);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -35,6 +37,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/resume", resumeRoutes);
+app.use("/api/analyze", analysisRoutes);
 
 const PORT = process.env.PORT || 5000;
 
