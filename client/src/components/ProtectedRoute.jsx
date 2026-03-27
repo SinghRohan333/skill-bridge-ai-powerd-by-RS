@@ -11,4 +11,14 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
+export const PublicRoute = ({ children }) => {
+  const { isAuthenticated } = useAuthStore();
+
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return children;
+};
+
 export default ProtectedRoute;

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { Mail, Lock, Sparkles } from "lucide-react";
+import { Mail, Lock, Sparkles, ArrowRight } from "lucide-react";
 import axiosInstance from "../utils/axios";
 import useAuthStore from "../store/authStore";
 
@@ -36,101 +36,65 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left Panel */}
-      <div className="hidden lg:flex w-1/2 bg-linear-to-br from-blue-600 to-purple-700 flex-col items-center justify-center p-12 text-white">
-        <div className="max-w-md text-center">
-          <div className="flex items-center justify-center gap-2 mb-6">
-            <Sparkles size={40} />
-          </div>
-          <h1 className="text-4xl font-bold mb-4">Skill Bridge AI</h1>
-          <p className="text-lg text-white/80 mb-8">
-            Smart Resume Analyzer, Skill Gap Finder and LaTeX Template Generator
-            powered by AI.
-          </p>
-          <div className="space-y-4 text-left">
-            <div className="flex items-center gap-3 bg-white/10 rounded-xl p-4">
-              <div className="w-2 h-2 rounded-full bg-white"></div>
-              <p className="text-white/90">
-                Upload your resume in PDF or DOCX format
-              </p>
-            </div>
-            <div className="flex items-center gap-3 bg-white/10 rounded-xl p-4">
-              <div className="w-2 h-2 rounded-full bg-white"></div>
-              <p className="text-white/90">
-                AI analyzes and finds your skill gaps
-              </p>
-            </div>
-            <div className="flex items-center gap-3 bg-white/10 rounded-xl p-4">
-              <div className="w-2 h-2 rounded-full bg-white"></div>
-              <p className="text-white/90">
-                Download a professional LaTeX resume template
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center px-4">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-125 h-75 bg-violet-600/15 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Right Panel */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 bg-base-100">
-        <div className="w-full max-w-md">
-          <div className="flex items-center gap-2 mb-2 lg:hidden">
-            <Sparkles size={24} className="text-primary" />
-            <span className="text-xl font-bold text-primary">
+      <div className="relative w-full max-w-md">
+        <div className="text-center mb-8">
+          <Link to="/" className="inline-flex items-center gap-2 mb-6">
+            <Sparkles size={20} className="text-violet-400" />
+            <span className="text-xl font-bold text-white">
               Skill Bridge AI
             </span>
-          </div>
+          </Link>
+          <h2 className="text-3xl font-bold text-white mb-2">Welcome back</h2>
+          <p className="text-white/40">Login to continue to your account</p>
+        </div>
 
-          <h2 className="text-3xl font-bold text-base-content mb-1">
-            Welcome back
-          </h2>
-          <p className="text-base-content/50 mb-8">
-            Login to continue to your account
-          </p>
-
+        <div className="bg-white/3 border border-white/10 rounded-2xl p-8">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            <div className="form-control">
-              <label className="label pb-1">
-                <span className="label-text font-medium">Email Address</span>
+            <div>
+              <label className="block text-sm font-medium text-white/70 mb-1.5">
+                Email Address
               </label>
-              <label
-                className={`input input-bordered flex items-center gap-2 w-full ${errors.email ? "input-error" : ""}`}
-              >
-                <Mail size={18} className="text-base-content/40" />
+              <div className="relative">
+                <Mail
+                  size={16}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30"
+                />
                 <input
                   type="email"
                   placeholder="you@example.com"
-                  className="grow"
+                  className={`w-full bg-white/5 border ${errors.email ? "border-red-500/50" : "border-white/10"} rounded-xl px-4 py-3 pl-10 text-white placeholder-white/20 focus:outline-none focus:border-violet-500/50 transition-colors text-sm`}
                   {...register("email", {
                     required: "Email is required",
                     pattern: {
                       value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                      message: "Enter a valid email address",
+                      message: "Enter a valid email",
                     },
                   })}
                 />
-              </label>
+              </div>
               {errors.email && (
-                <label className="label pt-1">
-                  <span className="label-text-alt text-error">
-                    {errors.email.message}
-                  </span>
-                </label>
+                <p className="text-red-400 text-xs mt-1">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
-            <div className="form-control">
-              <label className="label pb-1">
-                <span className="label-text font-medium">Password</span>
+            <div>
+              <label className="block text-sm font-medium text-white/70 mb-1.5">
+                Password
               </label>
-              <label
-                className={`input input-bordered flex items-center gap-2 w-full ${errors.password ? "input-error" : ""}`}
-              >
-                <Lock size={18} className="text-base-content/40" />
+              <div className="relative">
+                <Lock
+                  size={16}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30"
+                />
                 <input
                   type="password"
                   placeholder="Enter your password"
-                  className="grow"
+                  className={`w-full bg-white/5 border ${errors.password ? "border-red-500/50" : "border-white/10"} rounded-xl px-4 py-3 pl-10 text-white placeholder-white/20 focus:outline-none focus:border-violet-500/50 transition-colors text-sm`}
                   {...register("password", {
                     required: "Password is required",
                     minLength: {
@@ -139,39 +103,39 @@ const Login = () => {
                     },
                   })}
                 />
-              </label>
+              </div>
               {errors.password && (
-                <label className="label pt-1">
-                  <span className="label-text-alt text-error">
-                    {errors.password.message}
-                  </span>
-                </label>
+                <p className="text-red-400 text-xs mt-1">
+                  {errors.password.message}
+                </p>
               )}
             </div>
 
             <button
               type="submit"
-              className="btn w-full text-white bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 border-none mt-2"
               disabled={loading}
+              className="w-full flex items-center justify-center gap-2 bg-violet-600 hover:bg-violet-700 disabled:opacity-50 text-white py-3 rounded-xl font-semibold transition-colors mt-2"
             >
               {loading ? (
-                <span className="loading loading-spinner loading-sm"></span>
+                <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
-                "Login"
+                <>
+                  Login <ArrowRight size={16} />
+                </>
               )}
             </button>
           </form>
-
-          <p className="text-center mt-6 text-base-content/50 text-sm">
-            Don't have an account?{" "}
-            <Link
-              to="/register"
-              className="text-primary font-semibold hover:underline"
-            >
-              Register here
-            </Link>
-          </p>
         </div>
+
+        <p className="text-center mt-6 text-white/40 text-sm">
+          Don't have an account?{" "}
+          <Link
+            to="/register"
+            className="text-violet-400 hover:text-violet-300 font-medium transition-colors"
+          >
+            Register here
+          </Link>
+        </p>
       </div>
     </div>
   );

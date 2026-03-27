@@ -1,8 +1,15 @@
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
-import { Upload, FileText, X, CheckCircle, Briefcase } from "lucide-react";
+import {
+  Upload,
+  FileText,
+  X,
+  CheckCircle,
+  Briefcase,
+  Sparkles,
+} from "lucide-react";
 import axiosInstance from "../utils/axios";
 
 const JOB_ROLES = [
@@ -34,9 +41,7 @@ const UploadPage = () => {
       toast.error("Only PDF and DOCX files are allowed. Max size is 5MB.");
       return;
     }
-    if (acceptedFiles.length > 0) {
-      setFile(acceptedFiles[0]);
-    }
+    if (acceptedFiles.length > 0) setFile(acceptedFiles[0]);
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -93,121 +98,130 @@ const UploadPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-base-200">
-      <div className="navbar bg-base-100 shadow-sm px-6">
-        <div className="flex-1">
-          <span className="text-xl font-bold text-primary">
-            Skill Bridge AI
-          </span>
+    <div className="min-h-screen bg-[#0a0a0f] text-white">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-125 h-75 bg-violet-600/10 rounded-full blur-3xl pointer-events-none" />
+
+      {/* Navbar */}
+      <div className="sticky top-0 z-50 border-b border-white/5 bg-[#0a0a0f]/80 backdrop-blur-md">
+        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+          <Link to="/dashboard" className="flex items-center gap-2">
+            <Sparkles size={18} className="text-violet-400" />
+            <span className="font-bold text-white">Skill Bridge AI</span>
+          </Link>
+          <Link
+            to="/dashboard"
+            className="text-sm text-white/40 hover:text-white transition-colors"
+          >
+            Dashboard
+          </Link>
         </div>
       </div>
 
-      <div className="max-w-2xl mx-auto px-4 py-12">
+      <div className="relative max-w-2xl mx-auto px-6 py-12">
         <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold text-base-content mb-2">
+          <h1 className="text-3xl font-bold text-white mb-2">
             Upload Your Resume
           </h1>
-          <p className="text-base-content/50">
-            Upload your resume and select a target role for AI-powered skill gap
-            analysis
+          <p className="text-white/40">
+            Upload your resume and select a target role for AI-powered analysis
           </p>
         </div>
 
+        {/* Dropzone */}
         <div
           {...getRootProps()}
           className={`border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all duration-200
-            ${isDragActive ? "border-primary bg-primary/5 scale-105" : "border-base-300 hover:border-primary hover:bg-base-100"}
-            ${file ? "border-success bg-success/5" : ""}
+            ${isDragActive ? "border-violet-500 bg-violet-500/10 scale-105" : "border-white/10 hover:border-violet-500/50 hover:bg-white/3"}
+            ${file ? "border-emerald-500/50 bg-emerald-500/5" : ""}
           `}
         >
           <input {...getInputProps()} />
           {file ? (
             <div className="flex flex-col items-center gap-3">
-              <CheckCircle size={48} className="text-success" />
-              <p className="text-success font-semibold text-lg">
+              <CheckCircle size={48} className="text-emerald-400" />
+              <p className="text-emerald-400 font-semibold text-lg">
                 File Selected
               </p>
-              <p className="text-base-content/50 text-sm">
-                Click or drag to replace
-              </p>
+              <p className="text-white/30 text-sm">Click or drag to replace</p>
             </div>
           ) : (
             <div className="flex flex-col items-center gap-3">
-              <Upload size={48} className="text-primary/50" />
+              <Upload size={40} className="text-white/20" />
               {isDragActive ? (
-                <p className="text-primary font-semibold text-lg">
+                <p className="text-violet-400 font-semibold text-lg">
                   Drop your resume here
                 </p>
               ) : (
                 <>
-                  <p className="text-base-content font-semibold text-lg">
+                  <p className="text-white font-semibold text-lg">
                     Drag & drop your resume here
                   </p>
-                  <p className="text-base-content/50 text-sm">
+                  <p className="text-white/30 text-sm">
                     or click to browse files
                   </p>
                 </>
               )}
-              <p className="text-base-content/30 text-xs mt-2">
+              <p className="text-white/20 text-xs mt-2">
                 Supported formats: PDF, DOCX — Max size: 5MB
               </p>
             </div>
           )}
         </div>
 
+        {/* File Preview */}
         {file && (
-          <div className="mt-4 bg-base-100 rounded-xl p-4 flex items-center gap-4 shadow-sm">
-            <div className="bg-primary/10 rounded-lg p-3">
-              <FileText size={24} className="text-primary" />
+          <div className="mt-4 bg-white/3 border border-white/10 rounded-xl p-4 flex items-center gap-4">
+            <div className="bg-violet-500/10 border border-violet-500/20 rounded-lg p-2">
+              <FileText size={20} className="text-violet-400" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-medium text-base-content truncate">
-                {file.name}
-              </p>
-              <p className="text-sm text-base-content/50">
+              <p className="font-medium text-white truncate">{file.name}</p>
+              <p className="text-sm text-white/30">
                 {formatFileSize(file.size)}
               </p>
             </div>
             <button
               onClick={removeFile}
-              className="btn btn-ghost btn-sm btn-circle text-error"
+              className="p-1.5 text-white/30 hover:text-red-400 transition-colors rounded-lg hover:bg-white/5"
             >
-              <X size={18} />
+              <X size={16} />
             </button>
           </div>
         )}
 
+        {/* Job Role Dropdown */}
         <div className="mt-6">
-          <label className="label pb-1">
-            <span className="label-text font-medium flex items-center gap-2">
-              <Briefcase size={16} className="text-primary" />
-              Target Job Role
-            </span>
+          <label className="text-sm font-medium text-white/70 mb-1.5 flex items-center gap-2">
+            <Briefcase size={14} className="text-violet-400" />
+            Target Job Role
           </label>
           <select
-            className="select select-bordered w-full"
             value={targetRole}
             onChange={(e) => setTargetRole(e.target.value)}
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-violet-500/50 transition-colors text-sm"
           >
-            <option value="">Select your target job role</option>
+            <option value="" className="bg-[#0a0a0f]">
+              Select your target job role
+            </option>
             {JOB_ROLES.map((role) => (
-              <option key={role} value={role}>
+              <option key={role} value={role} className="bg-[#0a0a0f]">
                 {role}
               </option>
             ))}
           </select>
         </div>
 
+        {/* Upload Button */}
         <button
           onClick={handleUpload}
           disabled={!file || !targetRole || uploading}
-          className="btn w-full mt-6 text-white bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 border-none disabled:opacity-50"
+          className="w-full mt-6 flex items-center justify-center gap-2 bg-violet-600 hover:bg-violet-700 disabled:opacity-40 disabled:cursor-not-allowed text-white py-3.5 rounded-xl font-semibold transition-all hover:scale-[1.02]"
         >
           {uploading ? (
-            <span className="flex items-center gap-2">
-              <span className="loading loading-spinner loading-sm"></span>
+            <>
+              <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               Analyzing your resume...
-            </span>
+            </>
           ) : (
             "Upload & Analyze Resume"
           )}

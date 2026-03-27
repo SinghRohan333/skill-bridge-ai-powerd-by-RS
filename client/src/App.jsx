@@ -6,8 +6,8 @@ import {
 } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Register from "./pages/Register";
-import Login from "./pages/login";
-import ProtectedRoute from "./components/ProtectedRoute";
+import Login from "./pages/Login";
+import ProtectedRoute, { PublicRoute } from "./components/ProtectedRoute";
 import UploadPage from "./pages/Upload";
 import Analysis from "./pages/Analysis";
 import Latex from "./pages/Latex";
@@ -21,8 +21,22 @@ const App = () => {
       <Toaster position="top-right" />
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <PublicRoute>
+              <Register />
+            </PublicRoute>
+          }
+        />
         <Route
           path="/dashboard"
           element={
