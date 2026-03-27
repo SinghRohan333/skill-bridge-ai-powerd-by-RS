@@ -6,25 +6,28 @@ import {
 } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Register from "./pages/Register";
-import Login from "./pages/Login";
+import Login from "./pages/login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import UploadPage from "./pages/Upload";
 import Analysis from "./pages/Analysis";
 import Latex from "./pages/Latex";
+import Dashboard from "./pages/Dashboard";
+import Landing from "./pages/Landing";
+import NotFound from "./pages/NotFound";
 
 const App = () => {
   return (
     <Router>
       <Toaster position="top-right" />
       <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <div>Dashboard Page</div>
+              <Dashboard />
             </ProtectedRoute>
           }
         />
@@ -52,7 +55,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-        <Route path="*" element={<div>404 Not Found</div>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
