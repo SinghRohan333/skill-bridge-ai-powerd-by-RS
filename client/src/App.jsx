@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import UploadPage from "./pages/Upload";
 import Analysis from "./pages/Analysis";
+import Latex from "./pages/Latex";
 
 const App = () => {
   return (
@@ -47,7 +48,7 @@ const App = () => {
           path="/latex/:id"
           element={
             <ProtectedRoute>
-              <div>LaTeX Page</div>
+              <Latex />
             </ProtectedRoute>
           }
         />

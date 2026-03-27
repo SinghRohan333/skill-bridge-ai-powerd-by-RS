@@ -86,3 +86,33 @@ Return ONLY a valid JSON object with this exact structure, no markdown, no expla
     gapData,
   };
 };
+
+export const generateLatex = async (extractedData) => {
+  const completion = await groq.chat.completions.create({
+    model: "llama-3.3-70b-versatile",
+    messages: [
+      {
+        role: "user",
+        content: `You are a LaTeX expert. Generate a professional, clean and complete LaTeX resume template using the following candidate data.
+
+Candidate Data:
+${JSON.stringify(extractedData, null, 2)}
+
+Requirements:
+- Use the article document class
+- Use common packages: geometry, fontenc, inputenc, hyperref, titlesec, enumitem, xcolor
+- Define a clean professional layout with blue color accents (use color #2563EB)
+- Include all sections: Contact Info, Summary, Education, Experience, Skills
+- Make it ATS friendly and professional
+- The LaTeX must be complete and compilable on Overleaf without any modifications
+- Do NOT include any explanation or markdown, return ONLY the raw LaTeX code starting with \\documentclass`,
+      },
+    ],
+    temperature: 0.3,
+    max_tokens: 3000,
+  });
+
+  const text = completion.choices[0].message.content;
+  const cleanText = text.replace(/```latex|```/g, "").trim();
+  return cleanText;
+};

@@ -2,6 +2,8 @@ import fs from "fs";
 import mammoth from "mammoth";
 import Resume from "../models/Resume.js";
 import { createRequire } from "module";
+import { generateLatex } from "../services/groqService.js";
+import Analysis from "../models/Analysis.js";
 
 const require = createRequire(import.meta.url);
 
@@ -46,12 +48,10 @@ export const uploadResume = async (req, res) => {
 
     if (!rawText || rawText.trim().length === 0) {
       fs.unlinkSync(filePath);
-      return res
-        .status(400)
-        .json({
-          message:
-            "Could not extract text from file. Please make sure your resume has readable text.",
-        });
+      return res.status(400).json({
+        message:
+          "Could not extract text from file. Please make sure your resume has readable text.",
+      });
     }
 
     const resume = await Resume.create({
@@ -86,6 +86,44 @@ export const getResumeHistory = async (req, res) => {
       .sort({ createdAt: -1 });
 
     res.status(200).json({ resumes });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export const generateLatexTemplate = async (req, res) => {
+  try {
+    const { analysisId } = req.body;
+
+    if (!analysisId) {
+      return res.status(400).json({ message: "Analysis ID is required" });
+    }
+
+    const analysis = await Analysis.findOne({
+      _id: analysisId,
+      userId: req.user.id,
+    });
+
+    if (!analysis) {
+      return res.status(404).json({ message: "Analysis not found" });
+    }
+
+    if (analysis.latexTemplate) {
+      return res.status(200).json({
+        message: "LaTeX template retrieved from cache",
+        latex: analysis.latexTemplate,
+      });
+    }
+
+    const latex = await generateLatex(analysis.extractedData);
+
+    analysis.latexTemplate = latex;
+    await analysis.save();
+
+    res.status(200).json({
+      message: "LaTeX template generated successfully",
+      latex,
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
