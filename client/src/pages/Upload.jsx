@@ -29,6 +29,7 @@ const JOB_ROLES = [
   "Mobile App Developer",
   "Database Administrator",
 ];
+import Footer from "../components/Footer";
 
 const UploadPage = () => {
   const [file, setFile] = useState(null);
@@ -227,6 +228,7 @@ const UploadPage = () => {
           )}
         </button>
       </div>
+      <Footer />
     </div>
   );
 };

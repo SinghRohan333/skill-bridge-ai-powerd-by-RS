@@ -18,6 +18,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import axiosInstance from "../utils/axios";
+import Footer from "../components/Footer";
 
 const Analysis = () => {
   const { id } = useParams();
@@ -325,6 +326,7 @@ const Analysis = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

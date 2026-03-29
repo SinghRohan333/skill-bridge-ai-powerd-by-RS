@@ -311,7 +311,7 @@ const Landing = () => {
                     className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white/60 hover:text-white text-sm px-4 py-2 rounded-lg transition-all"
                   >
                     <Mail size={14} />
-                    {showEmail ? "rohan.singh@gmail.com" : "Email"}
+                    {showEmail ? "rohan.singh.syl@gmail.com" : "Email"}
                   </button>
 
                   <a
