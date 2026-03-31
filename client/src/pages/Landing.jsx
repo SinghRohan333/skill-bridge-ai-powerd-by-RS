@@ -234,7 +234,7 @@ const Landing = () => {
               {/* Photo */}
               <div className="shrink-0">
                 <img
-                  src="/src/assets/github_rohan.png"
+                  src="./src/assets/github_rohan.png"
                   alt="Rohan Singh"
                   className="w-32 h-32 rounded-2xl object-cover border-2 border-violet-500/20"
                 />
