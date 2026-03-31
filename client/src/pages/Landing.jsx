@@ -16,6 +16,7 @@ import {
 import { FaGithub } from "react-icons/fa";
 import { ImLinkedin } from "react-icons/im";
 import useAuthStore from "../store/authStore";
+import rohanPhoto from "../assets/github_rohan.png";
 
 const Landing = () => {
   const { isAuthenticated } = useAuthStore();
@@ -234,7 +235,7 @@ const Landing = () => {
               {/* Photo */}
               <div className="shrink-0">
                 <img
-                  src="./src/assets/github_rohan.png"
+                  src={rohanPhoto}
                   alt="Rohan Singh"
                   className="w-32 h-32 rounded-2xl object-cover border-2 border-violet-500/20"
                 />
