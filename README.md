@@ -20,7 +20,7 @@
 
 <br />
 
-[🚀 Live Demo](#) · [📖 Documentation](#getting-started) · [🐛 Report Bug](https://github.com/SinghRohan333/skill-bridge-ai-powerd-by-RS/issues) · [💡 Request Feature](https://github.com/SinghRohan333/skill-bridge-ai-powerd-by-RS/issues)
+[🚀 Live Demo](https://skill-bridge-ai-blue.vercel.app/) · [📖 Documentation](#getting-started) · [🐛 Report Bug](https://github.com/SinghRohan333/skill-bridge-ai-powerd-by-RS/issues) · [💡 Request Feature](https://github.com/SinghRohan333/skill-bridge-ai-powerd-by-RS/issues)
 
 </div>
 
@@ -259,7 +259,7 @@ _Full Stack Developer · Competitive Programmer · AI/ML Enthusiast_
 ## 📄 License
 
 ```
-MIT License — Copyright (c) 2025 Rohan Singh
+MIT License — Copyright (c) 2026 Rohan Singh
 ```
 
 This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for full details.
