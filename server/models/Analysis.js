@@ -14,7 +14,16 @@ const analysisSchema = new mongoose.Schema(
     },
     targetRole: {
       type: String,
-      required: true,
+      default: null,
+    },
+    analysisMode: {
+      type: String,
+      enum: ["role", "document"],
+      default: "role",
+    },
+    jobDocumentText: {
+      type: String,
+      default: null,
     },
     extractedData: {
       name: String,

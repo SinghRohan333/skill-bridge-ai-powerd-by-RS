@@ -16,7 +16,6 @@ const fileFilter = (req, file, cb) => {
     "application/pdf",
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   ];
-
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
