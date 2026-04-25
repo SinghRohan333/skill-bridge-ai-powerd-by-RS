@@ -29,7 +29,14 @@ const Login = () => {
       toast.success("Welcome back!");
       navigate("/dashboard");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Login failed");
+      if (error.response?.data?.notVerified) {
+        toast.error("Email not verified. Redirecting to verification...");
+        setTimeout(() => {
+          navigate("/verify-email", { state: { email: data.email } });
+        }, 1500);
+      } else {
+        toast.error(error.response?.data?.message || "Login failed");
+      }
     } finally {
       setLoading(false);
     }

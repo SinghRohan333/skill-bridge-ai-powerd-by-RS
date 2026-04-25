@@ -13,11 +13,15 @@ import {
 } from "lucide-react";
 import axiosInstance from "../utils/axios";
 import useAuthStore from "../store/authStore";
+import { UserCircle } from "lucide-react";
+import ProfileModal from "../components/ProfileModal";
 
 const Dashboard = () => {
   const [resumes, setResumes] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user, logout } = useAuthStore();
+  const [profileOpen, setProfileOpen] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -79,6 +83,12 @@ const Dashboard = () => {
               <span className="hidden sm:inline">New Analysis</span>
               <span className="sm:hidden">New</span>
             </Link>
+            <button
+              onClick={() => setProfileOpen(true)}
+              className="p-1.5 text-white/40 hover:text-white transition-colors rounded-lg hover:bg-white/5"
+            >
+              <UserCircle size={18} />
+            </button>
             <button
               onClick={handleLogout}
               className="p-1.5 text-white/40 hover:text-white transition-colors rounded-lg hover:bg-white/5"
@@ -253,6 +263,10 @@ const Dashboard = () => {
           </p>
         </div>
       </div>
+      <ProfileModal
+        isOpen={profileOpen}
+        onClose={() => setProfileOpen(false)}
+      />
     </div>
   );
 };

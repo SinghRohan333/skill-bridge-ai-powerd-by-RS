@@ -26,10 +26,8 @@ const Register = () => {
         email: data.email,
         password: data.password,
       });
-      setToken(response.data.token);
-      setUser(response.data.user);
-      toast.success("Account created successfully!");
-      navigate("/dashboard");
+      toast.success("Verification code sent to your email!");
+      navigate("/verify-email", { state: { email: data.email } });
     } catch (error) {
       toast.error(error.response?.data?.message || "Registration failed");
     } finally {

@@ -14,6 +14,7 @@ import Latex from "./pages/Latex";
 import Dashboard from "./pages/Dashboard";
 import Landing from "./pages/Landing";
 import NotFound from "./pages/NotFound";
+import VerifyEmail from "./pages/VerifyEmail";
 
 const App = () => {
   return (
@@ -37,6 +38,7 @@ const App = () => {
             </PublicRoute>
           }
         />
+        <Route path="/verify-email" element={<VerifyEmail />} />
         <Route
           path="/dashboard"
           element={
