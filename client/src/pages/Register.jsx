@@ -2,12 +2,23 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { Mail, Lock, User, Sparkles, ArrowRight } from "lucide-react";
+import {
+  Mail,
+  Lock,
+  User,
+  Sparkles,
+  ArrowRight,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import axiosInstance from "../utils/axios";
 import useAuthStore from "../store/authStore";
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const navigate = useNavigate();
   const { setUser, setToken } = useAuthStore();
 
@@ -126,9 +137,9 @@ const Register = () => {
                   className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30"
                 />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   placeholder="Min. 6 characters"
-                  className={inputClass(errors.password)}
+                  className={`w-full bg-white/5 border ${errors.password ? "border-red-500/50" : "border-white/10"} rounded-xl px-4 py-3 pl-10 pr-10 text-white placeholder-white/20 focus:outline-none focus:border-violet-500/50 transition-colors text-sm`}
                   {...register("password", {
                     required: "Password is required",
                     minLength: {
@@ -137,6 +148,13 @@ const Register = () => {
                     },
                   })}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white transition-colors"
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
               </div>
               {errors.password && (
                 <p className="text-red-400 text-xs mt-1">
@@ -155,15 +173,26 @@ const Register = () => {
                   className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30"
                 />
                 <input
-                  type="password"
+                  type={showConfirmPassword ? "text" : "password"}
                   placeholder="Confirm your password"
-                  className={inputClass(errors.confirmPassword)}
+                  className={`w-full bg-white/5 border ${errors.confirmPassword ? "border-red-500/50" : "border-white/10"} rounded-xl px-4 py-3 pl-10 pr-10 text-white placeholder-white/20 focus:outline-none focus:border-violet-500/50 transition-colors text-sm`}
                   {...register("confirmPassword", {
                     required: "Please confirm your password",
                     validate: (value) =>
                       value === watch("password") || "Passwords do not match",
                   })}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white transition-colors"
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff size={16} />
+                  ) : (
+                    <Eye size={16} />
+                  )}
+                </button>
               </div>
               {errors.confirmPassword && (
                 <p className="text-red-400 text-xs mt-1">
